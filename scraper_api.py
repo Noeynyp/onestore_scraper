@@ -25,18 +25,21 @@ def scrape_onestore():
                 page.wait_for_timeout(2000)
 
             logging.info("Selecting product elements...")
-            products = page.query_selector_all('.prod_item')
+            # Updated container selector based on your screenshot
+            products = page.query_selector_all('.swiper-slide')
 
             games = []
             for product in products:
-                title = product.query_selector('.prod_name')
-                price = product.query_selector('.price .current')
-                discount = product.query_selector('.price .discount')
+                # Updated title selector
+                title = product.query_selector('.swiper-slide-ti')
+                # Price and discount may not be available here
+                price = None
+                discount = None
 
                 games.append({
                     "title": title.inner_text().strip() if title else "",
-                    "price": price.inner_text().strip() if price else "",
-                    "discount": discount.inner_text().strip() if discount else ""
+                    "price": price if price else "N/A",
+                    "discount": discount if discount else "N/A"
                 })
 
             browser.close()
@@ -49,7 +52,6 @@ def scrape_onestore():
     except Exception as e:
         logging.error(f"Unexpected error during scraping: {e}")
         return []
-
 
 @app.route("/run-scraper", methods=["POST"])
 def run_scraper():
