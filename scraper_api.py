@@ -10,6 +10,10 @@ def scrape_onestore():
         page = browser.new_page()
         page.goto("https://m.onestore.net/en-sg/main/main")
 
+        # 🔍 Wait until .prod_item elements are present
+        page.wait_for_selector('.prod_item')
+
+        # Simulate scrolling to load more products
         for _ in range(5):
             page.mouse.wheel(0, 1500)
             page.wait_for_timeout(1500)
@@ -35,7 +39,7 @@ def scrape_onestore():
 def run_scraper():
     data = scrape_onestore()
 
-    # Send to your n8n webhook
+    # Send the result to your n8n webhook
     webhook_url = "https://panisn.app.n8n.cloud/webhook/onestore-scraper"
     requests.post(webhook_url, json=data)
 
