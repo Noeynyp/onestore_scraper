@@ -57,7 +57,8 @@ def scrape_onestore():
 def run_scraper():
     data = scrape_onestore()
 
-    webhook_url = "https://panisn.app.n8n.cloud/webhook/onestore-scraper"
+    webhook_url = "https://panisn.app.n8n.cloud/webhook-test/onestore-scraper"
+
     try:
         resp = requests.post(webhook_url, json=data)
         resp.raise_for_status()
